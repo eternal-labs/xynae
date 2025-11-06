@@ -20,6 +20,7 @@ Xynae is a flexible Python framework that enables AI agents to autonomously inte
 - ⏰ **Scheduled Posting**: Configurable intervals for posting and checking mentions
 - 🔧 **Highly Customizable**: Easy to customize personality, behavior, and posting patterns
 - 🔐 **Secure Configuration**: Environment variable-based API key management
+- ⌨️ **Command-Line Interface**: Easy-to-use CLI for running, testing, and managing the bot
 
 ## Quick Start
 
@@ -78,6 +79,12 @@ MONGODB_URI=mongodb://localhost:27017/
 
 ### 4. Run
 
+**Using CLI (Recommended):**
+```bash
+python cli.py run
+```
+
+**Or using Python directly:**
 ```bash
 python xynae.py
 ```
@@ -166,6 +173,91 @@ recent_tweets = xynae.db.get_recent_tweets(limit=10)
 recent_replies = xynae.db.get_recent_replies(limit=10)
 ```
 
+## Command-Line Interface (CLI)
+
+Xynae includes a powerful CLI for easy interaction with the framework.
+
+### Running the Bot
+
+```bash
+# Run with default settings (20 min tweets, 5 min checks)
+python cli.py run
+
+# Run with custom intervals (30 min tweets, 2 min checks)
+python cli.py run --tweet-interval 30 --check-interval 2
+
+# Run with specific LLM provider
+python cli.py run --llm-provider anthropic
+
+# Run without database (memory-only mode)
+python cli.py run --no-database
+```
+
+### Generating Tweets
+
+```bash
+# Generate a single tweet
+python cli.py generate
+
+# Generate multiple tweets
+python cli.py generate --count 5
+
+# Generate specific tweet type in specific language
+python cli.py generate --type insight --language english --count 3
+
+# Save generated tweets to file
+python cli.py generate --count 10 --output tweets.txt
+
+# Use custom personality file
+python cli.py generate --personality-file my_personality.txt
+```
+
+### Checking Status
+
+```bash
+# Check system status (LLM providers, Twitter, database)
+python cli.py status
+
+# Check status with specific database
+python cli.py status --database-name my_bot
+```
+
+### Database Statistics
+
+```bash
+# Show database statistics
+python cli.py stats
+
+# Show recent tweets
+python cli.py stats --recent 10
+
+# Export statistics to JSON
+python cli.py stats --json stats.json
+```
+
+### Testing Configuration
+
+```bash
+# Test all connections and configuration
+python cli.py test
+
+# Test with specific LLM provider
+python cli.py test --llm-provider openai
+```
+
+### CLI Options
+
+Common options available for most commands:
+- `--llm-provider`: Choose LLM provider (`auto`, `anthropic`, `openai`, `gemini`)
+- `--mongodb-uri`: MongoDB connection string
+- `--database-name`: Database name (default: `xynae`)
+- `--no-database`: Run without database (memory-only mode)
+
+For help on any command:
+```bash
+python cli.py <command> --help
+```
+
 ## Configuration Options
 
 ### Tweet Intervals
@@ -185,6 +277,7 @@ recent_replies = xynae.db.get_recent_replies(limit=10)
 ```
 xynae/
 ├── xynae.py                 # Main framework class
+├── cli.py                   # Command-line interface
 ├── llm_providers.py         # LLM provider abstraction layer
 │   ├── LLMProvider          # Base class
 │   ├── AnthropicProvider    # Claude API
